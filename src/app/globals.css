@@ -46,9 +46,14 @@ input:focus {
 }
 
 .column {
-  width: 360px;
+  width: 380px;
 }
 
 .smallTxt {
   font-size: 13px;
+}
+
+.resetBtn {
+  background-color: #0C686D;
+  color: #035D62;
 }
