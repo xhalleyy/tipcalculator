@@ -1,7 +1,7 @@
 'use client'
 
 import { tipForEach, totalForEach } from "@/utils/calculations";
-import Image from "next/image";
+// import Image from "next/image";
 import { useEffect, useState } from "react";
 import CurrencyInput from "react-currency-input-field";
 
@@ -10,17 +10,17 @@ export default function Home() {
   const [isFilled, setIsFilled] = useState<boolean>(false);
   const [isFilled2, setIsFilled2] = useState<boolean>(false);
   const [isSelected, setIsSelected] = useState<boolean>(false);
-  const [bill, setBill] = useState<number>(0);
+  const [bill, setBill] = useState<number | undefined>(undefined);
   const [peopleCount, setPeopleCount] = useState<number | undefined>(undefined);
   const [tip, setTip] = useState<number>(0);
   const [tipPerPerson, setTipPerPerson] = useState<string>('$0.00');
   const [totalPerPerson, setTotalPerPerson] = useState<string>('$0.00');
 
-  
+
   const handleBillAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
     let parsedValue = parseFloat(value);
-  
+
     // parse float parses a string and returns a floating point number
     // then toFixed formats the number using fixed-point notation(the numbers of digits to appear after the decimal points)
     if (!isNaN(parsedValue) || parsedValue > 0) {
@@ -28,7 +28,7 @@ export default function Home() {
       setBill(roundedValue);
       setIsFilled(true);
     } else {
-      setBill(0); 
+      setBill(0);
       setIsFilled(false);
     }
   }
@@ -37,18 +37,18 @@ export default function Home() {
   const handlePeople = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
 
-    if(value !== '' && /^\d*\.?\d+$/.test(value) && Number(value)){
+    if (value !== '' && /^\d*\.?\d+$/.test(value) && Number(value)) {
       setPeopleCount(Math.ceil(Number(e.target.value)));
       setIsFilled2(true);
-    }else{
+    } else {
       setPeopleCount(undefined);
       setIsFilled2(false);
     }
-    
+
   }
   // console.log(bill)
   // console.log(peopleCount)
-  
+
 
   const fivePercent = () => {
     setTip(0.05);
@@ -82,20 +82,20 @@ export default function Home() {
 
   useEffect(() => {
     if (isFilled && isFilled2 && isSelected) {
-      let total1 = tipForEach(bill, tip, peopleCount!);
-      let total2 = totalForEach(bill, tip, peopleCount!);
+      let total1 = tipForEach(bill!, tip, peopleCount!);
+      let total2 = totalForEach(bill!, tip, peopleCount!);
 
       setTipPerPerson(`$${total1.toLocaleString("en", { minimumFractionDigits: 2 })}`);
       setTotalPerPerson(`$${total2.toLocaleString("en", { minimumFractionDigits: 2 })}`);
     }
   }, [isFilled, isFilled2, isSelected, bill, peopleCount, tip]);
 
-  const handleReset = ()=> {
-    if (isFilled && isFilled2 && isSelected){
+  const handleReset = () => {
+    if (isFilled && isFilled2 && isSelected) {
       setIsFilled(false);
       setIsFilled2(false);
       setIsSelected(false);
-      setBill(0);
+      setBill(undefined);
       setPeopleCount(undefined);
       setTip(0);
       setTipPerPerson('$0.00')
@@ -103,14 +103,14 @@ export default function Home() {
     }
   }
 
-  
+
 
   const tipClass: string = 'px-5 py-2 bg-darkCyan rounded-md focus:bg-cyan focus:text-darkCyan';
   const pickedTipClass: string = 'px-5 py-2 rounded-md bg-cyan text-darkCyan';
 
   return (
     <div className="background flex min-h-screen flex-col items-center font-space-mono">
-      <h1 className=" pt-32 pb-8 text-2xl header">SPLI <br /> TTER</h1>
+      <h1 className="pt-20 pb-8 text-2xl header">SPLI <br /> TTER</h1>
       <div className="card grid grid-cols-2 mt-10 p-7 gap-9 bg-white rounded-3xl ">
         <div className="col-span-1 column py-3 ps-3 pe-2">
 
@@ -119,8 +119,16 @@ export default function Home() {
             <p className="text-gray mb-1 text-sm">Bill</p>
             <div className=" bg-offWhite px-4 py-1.5 rounded-sm flex flex-row justify-between items-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17"><path fill="#9EBBBD" d="M6.016 16.328v-1.464c1.232-.08 2.22-.444 2.964-1.092.744-.648 1.116-1.508 1.116-2.58v-.144c0-.992-.348-1.772-1.044-2.34-.696-.568-1.708-.932-3.036-1.092V4.184c.56.144 1.012.4 1.356.768.344.368.516.816.516 1.344v.288h1.824v-.432c0-.448-.088-.876-.264-1.284a3.783 3.783 0 00-.744-1.116A4.251 4.251 0 007.54 2.9a5.324 5.324 0 00-1.524-.492V.872H4.288V2.36a5.532 5.532 0 00-1.416.324c-.448.168-.84.392-1.176.672-.336.28-.604.616-.804 1.008-.2.392-.3.844-.3 1.356v.144c0 .96.316 1.708.948 2.244.632.536 1.548.884 2.748 1.044v3.912c-.704-.16-1.248-.472-1.632-.936-.384-.464-.576-1.08-.576-1.848v-.288H.256v.576c0 .464.08.924.24 1.38.16.456.404.88.732 1.272.328.392.744.728 1.248 1.008s1.108.476 1.812.588v1.512h1.728zM4.288 7.424c-.688-.128-1.164-.332-1.428-.612-.264-.28-.396-.644-.396-1.092 0-.464.176-.832.528-1.104.352-.272.784-.448 1.296-.528v3.336zm1.728 5.712V9.344c.768.128 1.328.328 1.68.6.352.272.528.688.528 1.248 0 .544-.196.984-.588 1.32-.392.336-.932.544-1.62.624z" /></svg>
-              {/* <input onInput={validate} onChange={handleBillAmount} className="bg-offWhite text-2xl text-end border-0 border:border-0 text-darkCyan" type="text" placeholder="0" /> */}
-              <CurrencyInput disableGroupSeparators onChange={handleBillAmount} className="bg-offWhite text-2xl text-end border-0 border:border-0 text-darkCyan" min='0' placeholder="0"/>
+              <input
+                type="number"
+                value={bill ?? ''}
+                onChange={handleBillAmount}
+                className="bg-offWhite text-2xl text-end border-0 text-darkCyan"
+                min='0'
+                step='0.01'
+                placeholder="0"
+              />
+              {/* <CurrencyInput disableGroupSeparators onChange={handleBillAmount} className="bg-offWhite text-2xl text-end border-0 border:border-0 text-darkCyan" min='0' placeholder="0"/> */}
             </div>
           </div>
 
@@ -128,12 +136,12 @@ export default function Home() {
           <div className="mt-10 ">
             <p className="text-gray mb-3 text-sm"> Select Tip %</p>
             <div className="grid grid-cols-3 gap-3 text-xl text-offWhite">
-              <button onClick={fivePercent} className={ tip === 0.05 ? pickedTipClass : tipClass}>5%</button>
-              <button onClick={tenPercent} className={ tip === 0.10 ? pickedTipClass : tipClass}>10%</button>
-              <button onClick={fifteenPercent} className={ tip === 0.15 ? pickedTipClass : tipClass}>15%</button>
-              <button onClick={quarterPercent} className={ tip === 0.25 ? pickedTipClass : tipClass}>25%</button>
-              <button onClick={fiftyPercent} className={ tip === 0.50 ? pickedTipClass : tipClass}>50%</button>
-              <button onClick={customTip} className={ tip === 0.20 ? pickedTipClass : 'py-2 bg-offWhite text-gray rounded-lg focus:bg-cyan focus:text-darkCyan'}>Custom</button>
+              <button onClick={fivePercent} className={tip === 0.05 ? pickedTipClass : tipClass}>5%</button>
+              <button onClick={tenPercent} className={tip === 0.10 ? pickedTipClass : tipClass}>10%</button>
+              <button onClick={fifteenPercent} className={tip === 0.15 ? pickedTipClass : tipClass}>15%</button>
+              <button onClick={quarterPercent} className={tip === 0.25 ? pickedTipClass : tipClass}>25%</button>
+              <button onClick={fiftyPercent} className={tip === 0.50 ? pickedTipClass : tipClass}>50%</button>
+              <button onClick={customTip} className={tip === 0.20 ? pickedTipClass : 'py-2 bg-offWhite text-gray rounded-lg focus:bg-cyan focus:text-darkCyan'}>Custom</button>
             </div>
           </div>
 
