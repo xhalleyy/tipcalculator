@@ -45,10 +45,6 @@ input:focus {
   border: 0px;
 }
 
-.column {
-  width: 380px;
-}
-
 .smallTxt {
   font-size: 13px;
 }
@@ -72,7 +68,7 @@ input::-webkit-inner-spin-button {
 .custom{
   border: 2px solid #26c0ab !important;
   text-align: right;
-  padding-right: 7px;
+  padding-right: 9px;
   caret-color: #26c0ab;
 }
 
