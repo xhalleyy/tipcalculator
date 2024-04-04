@@ -63,3 +63,27 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.tipHover:hover {
+  background-color: #9ce9e0;
+  color: #00494d;
+}
+
+.custom{
+  border: 2px solid #26c0ab !important;
+  text-align: right;
+  padding-right: 7px;
+  caret-color: #26c0ab;
+}
+
+input:focus::placeholder {
+  color: transparent;
+}
+
+.zeroBorder {
+  border: 2px solid #E56E54;
+}
+
+.orange{
+  color: #E56E54;
+}
