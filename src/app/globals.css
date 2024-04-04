@@ -68,7 +68,7 @@ input::-webkit-inner-spin-button {
 .custom{
   border: 2px solid #26c0ab !important;
   text-align: right;
-  padding-right: 9px;
+  padding-right: 11px;
   caret-color: #26c0ab;
 }
 
