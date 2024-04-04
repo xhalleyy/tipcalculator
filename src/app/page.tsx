@@ -46,37 +46,41 @@ export default function Home() {
       setPeopleCount(undefined);
       setIsFilled2(false);
     }
-
   }
 
   const fivePercent = () => {
     setTip(0.05);
     setIsSelected(true);
     setIsCustom(false);
+    setCustomAmount(undefined); 
   }
 
   const tenPercent = () => {
     setTip(0.10);
     setIsSelected(true);
     setIsCustom(false);
+    setCustomAmount(undefined); 
   }
 
   const fifteenPercent = () => {
     setTip(0.15);
     setIsSelected(true);
     setIsCustom(false);
+    setCustomAmount(undefined); 
   }
 
   const quarterPercent = () => {
     setTip(0.25);
     setIsSelected(true);
     setIsCustom(false);
+    setCustomAmount(undefined); 
   }
 
   const fiftyPercent = () => {
     setTip(0.50);
     setIsSelected(true);
     setIsCustom(false);
+    setCustomAmount(undefined); 
   }
 
   const customTip = (e: React.ChangeEvent<HTMLInputElement> ) => {
